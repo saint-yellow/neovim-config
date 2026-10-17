@@ -1,0 +1,20 @@
+# .stylua.toml
+# Style configuration for StyLua
+
+# Matches your Python PEP 8 preference
+column_width = 120
+
+line_endings = "Unix"
+
+indent_type = "Spaces"
+indent_width = 2
+
+quote_style = "AutoPreferDouble"
+
+# Always include parentheses in function calls for clarity
+# e.g., print("hello") instead of print "hello"
+call_parentheses = "Always"
+
+[sort_requires]
+# Automatically sort 'require' statements alphabetically
+enabled = true
