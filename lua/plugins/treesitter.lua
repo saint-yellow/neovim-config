@@ -3,6 +3,6 @@ return {
   build = ":TSUpdate all",
   event = { "BufReadPost", "BufNewFile" },
   config = function()
-    require("config.treesitter")
+    require("config.treesitter").setup()
   end,
 }

@@ -13,4 +13,7 @@ keymap("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 keymap("n", "L", "<cmd>tabnext<cr>", { noremap = true, silent = true })
 keymap("n", "H", "<cmd>tabprevious<cr>", { noremap = true, silent = true })
 
+keymap("v", "J", ":m '>+1<cr>gv=gv", { desc = "Move selected text upwords", noremap = true, silent = true })
+keymap("v", "K", ":m '<-2<cr>gv=gv", { desc = "Move selected text downwords", noremap = true, silent = true })
+
 keymap("n", "qq", "<cmd>qa<cr>", { desc = "Quit the editor", noremap = true, silent = true })

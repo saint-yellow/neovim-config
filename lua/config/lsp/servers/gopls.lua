@@ -1,22 +1,54 @@
-return function(handlers)
-  local config = {
-    cmd = { "gopls" },
-    filetypes = { "go", "gomod", "gowork" },
-    root_markers = { "go.mod", "go.sum", "go.work", ".git" },
-    capabilities = handlers.capabilities,
-    on_attach = handlers.on_attach,
-    settings = {
-      gopls = {
-        completeUnimported = true,
-        usePlaceholders = true,
-        analyses = {
-          unusedparams = true,
+local gopls_config = {
+  cmd = { "gopls", "-remote.debug=:0", "-remote=auto" },
+  filetypes = { "go", "gomod", "gosum", "gotmpl", "gohtmltmpl", "gotexttmpl" },
+  flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
+  capabilities = {
+    textDocument = {
+      completion = {
+        contextSupport = true,
+        dynamicRegistration = true,
+        completionItem = {
+          commitCharactersSupport = true,
+          deprecatedSupport = true,
+          preselectSupport = true,
+          insertReplaceSupport = true,
+          labelDetailsSupport = true,
+          snippetSupport = true,
+          documentationFormat = { "markdown", "plaintext" },
+          resolveSupport = {
+            properties = {
+              "documentation",
+              "details",
+              "additionalTextEdits",
+            },
+          },
         },
-        staticcheck = true,
-        gofumpt = true,
       },
     },
-  }
-  vim.lsp.config("gopls", config)
+  },
+  settings = {
+    gopls = {
+      staticcheck = true,
+      semanticTokens = true,
+      usePlaceholders = true,
+      completeUnimported = true,
+      symbolMatcher = "Fuzzy",
+      buildFlags = { "-tags", "integration" },
+      semanticTokenTypes = { string = false },
+      codelenses = {
+        generate = true,
+        gc_details = true,
+        test = true,
+        tidy = true,
+        vendor = true,
+        regenerate_cgo = true,
+        upgrade_dependency = true,
+      },
+    },
+  },
+}
+
+return function()
+  vim.lsp.config("gopls", gopls_config)
   vim.lsp.enable("gopls")
 end

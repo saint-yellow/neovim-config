@@ -7,7 +7,7 @@ end
 local function lsp_status()
   local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
   if #buf_clients == 0 then
-    return "No LSP"
+    return "No LSP Server"
   end
   local client_names = {}
   for _, client in ipairs(buf_clients) do
@@ -27,7 +27,7 @@ local config = {
     lualine_a = { "mode" },
     lualine_b = { "branch", "diff", "diagnostics" },
     lualine_c = { { "filename", path = 1 } },
-    lualine_x = { lsp_status, "encoding", "fileformat", "filetype" },
+    lualine_x = { lsp_status, "encoding", "filetype" },
     lualine_y = { "progress" },
     lualine_z = { "location" },
   },

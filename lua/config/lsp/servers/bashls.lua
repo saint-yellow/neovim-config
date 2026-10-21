@@ -1,3 +1,3 @@
-return function(handlers)
-    vim.lsp.enable("bashls")
+return function()
+  vim.lsp.enable("bashls")
 end

@@ -1,12 +1,13 @@
-local status_ok, _ = pcall(require, "nvim-treesitter")
-if not status_ok then
-  return
+local M = {}
+
+M.setup = function()
+  local config = {
+    ensure_installed = {},
+    sync_install = true,
+    highlight = { enbale = true },
+    indent = { enable = true },
+  }
+  require("nvim-treesitter.config").setup(config)
 end
 
-local config = require("nvim-treesitter.config")
-
-config.setup({
-  sync_install = true,
-  highlight = { enable = true },
-  indent = { enable = true },
-})
+return M

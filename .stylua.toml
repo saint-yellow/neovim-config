@@ -1,4 +1,5 @@
-# .stylua.toml
+#:schema https://schemastore.org/stylua.json
+
 # Style configuration for StyLua
 
 # Matches your Python PEP 8 preference

@@ -1,34 +1,26 @@
 local M = {}
 
-M.setup = function()
-  local handlers = require("config.lsp.handlers")
-  local servers_dir = vim.fn.stdpath("config") .. "/lua/config/lsp/servers"
-  local files = vim.fn.glob(servers_dir .. "/*.lua", false, true)
-  for _, file_path in pairs(files) do
-    local server_name = vim.fn.fnamemodify(file_path, ":t:r")
-    local module_path = "config.lsp.servers." .. server_name
-    local status_ok, server_config = pcall(require, module_path)
-    if status_ok then
-      server_config(handlers)
-    else
-      vim.notify("LSP: failed to auto-load config for " .. server_name, vim.log.levels.ERROR)
+function M.setup()
+  require("config.lsp.keymaps").setup()
+
+  local server_dir = vim.fn.stdpath("config") .. "/lua/config/lsp/servers"
+
+  local files = vim.fn.glob(server_dir .. "/*.lua", false, true)
+
+  for _, file in ipairs(files) do
+    local name = vim.fn.fnamemodify(file, ":t:r")
+    local ok, setup = pcall(require, "config.lsp.servers." .. name)
+
+    if not ok then
+      vim.notify(("Failed to load LSP config '%s': %s"):format(name, setup), vim.log.levels.ERROR)
+    elseif type(setup) == "function" then
+      local success, err = pcall(setup)
+
+      if not success then
+        vim.notify(("Failed to configure LSP '%s': %s"):format(name, err), vim.log.levels.ERROR)
+      end
     end
   end
 end
-
-M.opts = {
-    servers = {
-        ["*"] = {
-            keys = {
-                {"gd", "<cmd>vim.lsp.buf.definition<cr>", desc = "Go to Definition" },
-                { "K", "<cmd>vim.lsp.buf.hover<cr>", desc = "Hover" },
-                { "<leader>ca", "<cmd>vim.lsp.buf.code_action<cr>", desc = "Code Action"},
-                { "<leader>rn", "<cmd>vim.lsp.buf.rename<cr>", desc = "Rename" },
-                { "gr", "<cmd>vim.lsp.buf.references<cr>", desc = "Go to References" },
-                { "<leader>d", "<cmd>vim.diagnostic.open_float<cr>", desc = "Open Diagnostic"}
-            },
-        },
-    },
-}
 
 return M
